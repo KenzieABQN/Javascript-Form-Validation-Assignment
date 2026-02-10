@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Course Registration</title>
+</head>
+
+<!-- activity 2: course registration !! -->
+
+<body>
+    <h2>Course Registration</h2>
+    <form id="courseForm">
+        <p>
+            <label>Student Name:</label>
+            <input type="text" id="studentName">
+        </p>
+        <p>
+            <label>Course:</label>
+            <input type="radio" name="course" value="Web"> Web Programming <input type="radio" name="course"
+                value="Design"> Graphic Design
+        </p>
+        <p>
+            <label>Schedule:</label>
+            <input type="checkbox" class="schedule" value="Mon"> Monday <input type="checkbox" class="schedule"
+                value="Tue"> Tuesday <input type="checkbox" class="schedule" value="Wed"> Wednesday <input
+                type="checkbox" class="schedule" value="Thu"> Thursday <input type="checkbox" class="schedule"
+                value="Fri"> Friday <input type="checkbox" class="schedule" value="Sat"> Saturday
+        </p>
+        <button type="submit">Register</button>
+    </form>
+    <p id="output"></p>
+
+    <script>
+        const form = document.getElementById('courseForm');
+        const feedback = document.getElementById('output');
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            validate();
+        });
+
+        function validate() {
+            function showerror(message) {
+                feedback.innerText = message;
+                feedback.style.color = "red";
+            }
+
+            function showsuccess(message) {
+                feedback.innerText = message;
+                feedback.style.color = "green";
+            }
+            
+            const studentname = document.getElementById('studentName').value.trim();
+            const course = document.querySelector('input[name = "course"]:checked');
+            const schedule = document.querySelectorAll('.schedule:checked');
+
+            if (studentname === '') {
+                showerror("name cannot be empty!");
+                return;
+            }
+            if (!course) {
+                showerror("please select a course!");
+                return;
+            }
+            if (schedule.length === 0) {
+                showerror("please select at least one schedule!");
+                return;
+            }
+            showsuccess("course succesfully registered :))");
+        }
+    </script>
+</body>
+
+</html>

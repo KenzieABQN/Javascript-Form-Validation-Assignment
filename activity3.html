@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Order Form</title>
+</head>
+
+<!-- activity 3: online order! -->
+
+<body>
+    <h2>Order Form</h2>
+    <form id="orderForm">
+        <p>
+            <label>Product Name:</label>
+            <input type="text" id="product">
+        </p>
+        <p>
+            <label>Quantity:</label>
+            <input type="number" id="quantity">
+        </p>
+        <p>
+            <label>Delivery Time:</label>
+            <input type="time" id="delivery">
+        </p>
+        <button type="submit">Order</button>
+    </form>
+    <p id="status"></p>
+    <script>
+        const form = document.getElementById('orderForm');
+        const feedback = document.getElementById('status');
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            validate();
+        });
+
+        function validate() {
+            function showerror(message) {
+                feedback.innerText = message;
+                feedback.style.color = "red"
+            }
+            function showsuccess(message) {
+                feedback.innerText = message;
+                feedback.style.color = "green"
+            }
+            const productname = document.getElementById('product').value.trim();
+            const quantity = document.getElementById('quantity').value;
+            const time = document.getElementById('delivery').value;
+
+            if (productname === '') {
+                showerror("product name must be specifed!");
+                return;
+            }
+            if (quantity <= 0) {
+                showerror("quantity must be greater than 0!");
+                return;
+            }
+            if (time === "") {
+                showerror("please specify a time!");
+                return;
+            }
+            showsuccess("order placed succesfully! :D");
+        }
+    </script>
+</body>
+
+</html>

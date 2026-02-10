@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Validation</title>
+</head>
+
+<!-- challenge: submitted data must be in a summary -->
+<body>
+    <h2>Login Form</h2>
+    <form id="loginForm">
+        <p>
+            <label>Username:</label>
+            <input type="text" id="username">
+        </p>
+        <p>
+            <label>Password:</label>
+            <input type="password" id="password">
+        </p>
+        <button type="submit">Login</button>
+    </form>
+    <p id="message"></p>
+    <p id="summary"></p>
+    <script>
+        const form = document.getElementById('loginForm');
+        const feedback = document.getElementById('message');
+        const summary = document.getElementById('summary');
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            validate()
+        });
+
+        function report(message, color) {
+            feedback.innerText = message;
+            feedback.style.color = color;
+        }
+
+        function summarise(data1, data2, color) {
+            summary.innerText = `== Summary == \nUsername: ${data1}\nPassword: ${data2}`;
+            summary.style.color = color;
+        }
+
+        function validate() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (username === '') {
+                report("please type a username!", "red");
+                summarise("empty", "empty", "red");
+                return;
+            }
+            if (password === '') {
+                report("please insert a password!", "red")
+                summarise(username, "empty", "red");
+                return;
+            }
+
+            report("success!!", "green");
+            summarise(username, password, "green");
+        }
+    </script>
+</body>
+
+</html>
