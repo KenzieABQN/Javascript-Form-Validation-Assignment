@@ -1,0 +1,186 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Per Field</title>
+</head>
+
+<body>
+    <h1>Student Registration Form</h1>
+    <form id="registrationForm">
+        <p>
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter  student's full name">
+        </p>
+        <p id="nameReply"></p>
+
+        <p>
+            <label>Gender:</label>
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </p>
+        <p id="genderReply"></p>
+
+        <p>
+            <label>School Level:</label>
+            <input type="radio" name="schoolLevel" value="Kindergarten"> Kindergarten <input type="radio"
+                name="schoolLevel" value="Elementary"> Elementary <input type="radio" name="schoolLevel"
+                value="Junior High"> Junior High <input type="radio" name="schoolLevel" value="Senior High"> Senior High
+        </p>
+        <p id="levelReply"></p>
+
+        <p>
+            <label for="schoolName">School Name:</label>
+            <input type="text" id="schoolName" name="schoolName" placeholder="Enter  current school name">
+        </p>
+        <p id="schoolReply"></p>
+
+        <p>
+            <label for="address">Full Address:</label>
+            <textarea id="address" name="address" placeholder="Enter complete home  address"></textarea>
+        </p>
+        <p id="addressReply"></p>
+
+        <p>
+            <label for="parentName">Parent's Name:</label>
+            <input type="text" id="parentName" name="parentName" placeholder="Enter  parent's full name">
+        </p>
+        <p id="parentReply"></p>
+
+        <p>
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="number" id="phoneNumber" name="phoneNumber" placeholder="e.g. 081234567890">
+        </p>
+        <p id="numberReply"></p>
+
+        <p>
+            <label for="schedule">Tutoring Schedule:</label>
+            <input type="time" id="schedule" name="schedule">
+        </p>
+        <p id="scheduleReply"></p>
+
+        <p>
+            <label>Select Tutoring Program:</label>
+            <input type="checkbox" class="program" value="Mathematics"> Mathematics <input type="checkbox"
+                class="program" value="English"> English <input type="checkbox" class="program" value="Dance">
+            Traditional Dance <input type="checkbox" class="program" value="School Subject"> School Subjects
+        </p>
+        <p id="programReply"></p>
+
+        <p>
+            <button type="submit">Submit</button>
+            <button type="reset">Cancel</button>
+        </p>
+    </form>
+    <p id="feedback"></p>
+    <p id="summary"></p>
+    <script>
+        const form = document.getElementById("registrationForm");
+        const feedback = document.getElementById("feedback");
+        const summary = document.getElementById("summary")
+
+        const nameReply = document.getElementById("nameReply");
+        const genderReply = document.getElementById("genderReply");
+        const levelReply = document.getElementById("levelReply");
+        const schoolReply = document.getElementById("schoolReply");
+        const addressReply = document.getElementById("addressReply");
+        const parentReply = document.getElementById("parentReply");
+        const numberReply = document.getElementById("numberReply");
+        const scheduleReply = document.getElementById("scheduleReply");
+        const programReply = document.getElementById("programReply");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            validateForm();
+        });
+
+        function reply(id, message, color) {
+            id.innerText = message;
+            id.style.color = color;
+        }
+
+        function validateForm() {
+            const fullName = document.getElementById("fullName").value.trim();
+            const schoolName = document.getElementById("schoolName").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const parentName = document.getElementById("parentName").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const schedule = document.getElementById("schedule").value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const schoolLevel = document.querySelector(
+                'input[name="schoolLevel"]:checked',
+            );
+            const programs = document.querySelectorAll(".program:checked");
+
+            const replies = [nameReply, genderReply, levelReply, schoolReply, addressReply, parentReply, numberReply, scheduleReply, programReply];
+            replies.forEach(replie => {
+                replie.innerText = '';
+            });
+            summary.innerHTML = '';
+
+            let hasError = false;
+
+            if (fullName === "") {
+                reply(nameReply, "Please select a name!", "red");
+                hasError = true;
+            }
+            if (!gender) {
+                reply(genderReply, "Please select a gender!", "red");
+                hasError = true;
+            }
+            if (!schoolLevel) {
+                reply(levelReply, "Please pick a School Level!", "red");
+                hasError = true;
+            }
+            if (schoolName === "") {
+                reply(schoolReply, "Please fill in a School!", "red");
+                hasError = true;
+            }
+            if (address.length < 10) {
+                reply(addressReply, "Please fill in an Address!", "red");
+                hasError = true;
+            }
+            if (parentName === "") {
+                reply(parentReply, "Parent's name is required.", "red");
+                hasError = true;
+            }
+            if (phoneNumber === "") {
+                reply(numberReply, "Phone number is required.", "red");
+                hasError = true;
+            }
+            if (schedule === "") {
+                reply(scheduleReply, "Please select a tutoring schedule.", "red");
+                hasError = true;
+            }
+            if (programs.length === 0) {
+                reply(programReply, "Please select at least one tutoring program.", "red");
+                hasError = true;
+            }
+
+            if (!hasError) {
+                reply(feedback, "Form registered successfully! :)", "green");
+                const programsEnlisted = Array.from(programs).map(p => p.value).join(", ");
+                summary.innerHTML = `
+                            <h3> == Summary == </h3>
+                            <p>Name: ${fullName}</p>
+                            <p>Gender: ${gender.value}</p>
+                            <p>School Level: ${schoolLevel.value}</p>
+                            <p>School Name: ${schoolName}</p>
+                            <p>Address: ${address}</p>
+                            <p>Parent Name: ${parentName}</p>
+                            <p>Phone Number: ${phoneNumber}</p>
+                            <p>Schedule: ${schedule}</p>
+                            <p>Program: ${programsEnlisted}</p>
+                            `
+                summary.style.color = "blue";
+            } else {
+                reply(feedback, "Please fill in the form correctly!", "red");
+                return;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
